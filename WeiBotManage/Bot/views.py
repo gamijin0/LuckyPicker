@@ -51,10 +51,33 @@ def addCookies(request):
     try:
         if(request.method=="POST"):
             one =Bot.objects.get(username=request.POST['username'])
-            one.cookies=request.POST['newCookies']
+            headers_dict = headerParser(str(request.POST['newCookies']).strip())
+            one.cookies = str(headers_dict)
             print("Bot[%s]'s cookies added." % (one.username))
             one.save()
     except Exception as e:
         messages.error(request,str(e))
 
     return redirect(resolve_url(to='botManage'))
+
+
+
+#将headers解析位dict
+def headerParser(headers:str):
+
+    #分行
+    res=[]
+    res = headers.split('\n')
+    res=res[1:]
+    #将每行转化为dict
+    res_dict = dict()
+    for line in res:
+        res_dict.setdefault(str(line).split(':')[0],str(line).split(':')[1])
+
+    #将res_dict['Cookie']的值转化为dict
+    cookie_dict = dict()
+    for d in str(res_dict['Cookie']).split(';'):
+        cookie_dict.setdefault(str(d).split('=')[0],str(d).split('=')[1])
+    res_dict['Cookie'] = cookie_dict
+    return res_dict
+

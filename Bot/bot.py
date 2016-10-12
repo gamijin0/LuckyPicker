@@ -25,11 +25,12 @@ class Bot:
     }
     cookies = {
             'H5_INDEX': "3",
+            'M_WEIBOCN_PARAMS': "uicode=20000174",
             'H5_INDEX_TITLE': "ChaosKin9",
             'SCF': "Alhi3iuZKNjYbnL77hWoMvkQoE4edClB0S5n_r6NteS2u6p08-Xjk7DnXr_Em6P9tglZ1FZUg-UySu_l2XM-Ex8.",
-            'SSOLoginState': "1476183049",
-            'SUB': "_2A256-LRZDeTxGeNI7lYU9ybMyDuIHXVWAtwRrDV6PUJbkdBeLWXYkW0P-gSUKeHfymUgHTz50JanELb95A..",
-            'SUHB': "0WGclFYDKf9ikr",
+            'SSOLoginState': "1476280075",
+            'SUB': "_2A256-k9bDeTxGeNI7lYU9ybMyDuIHXVWBVETrDV6PUJbkdBeLWnfkW1NwRHJE8cEDUvnNpgMcOSDacgpTQ..",
+            'SUHB': "0oUoVUAEYRaUmO",
             '_T_WM': "d84a71d49bc7c7fb49b88edf731f55a3",
         }
     ###################################
