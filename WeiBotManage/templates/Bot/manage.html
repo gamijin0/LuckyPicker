@@ -44,28 +44,28 @@
                         </form>
 
 
-                        <button class="btn  btn-success" data-toggle="modal" data-target="#addCookies" style="font-family: 微软雅黑" >
+                        <button class="btn  btn-success" data-toggle="modal" data-target="#addCookies-{{ b.username }}" style="font-family: 微软雅黑" >
                             <span class="glyphicon glyphicon-pencil"></span>
                             修改cookies
                         </button>
 
                         {#用于修改cookies的模态框#}
-                        <div class="modal fade" id='addCookies' tabindex="-1" role="dialog"
-       aria-labelledby="myModalLabel" aria-hidden="true">
-       <div class="modal-dialog">
-          <div class="modal-content">
-             <div class="modal-header">
-                <button type="button" class="close"
-                   data-dismiss="modal" aria-hidden="true">
-                      &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                   修改cookies
-                </h4>
-             </div>
-             <div class="modal-body">
-                 {#表单#}
-                <form action={% url 'addCookies' %} method='post' role="form" class="form-horizontal">
+                        <div class="modal fade" id='addCookies-{{ b.username }}' tabindex="-1" role="dialog"
+                           aria-labelledby="myModalLabel" aria-hidden="true">
+                           <div class="modal-dialog">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <button type="button" class="close"
+                                       data-dismiss="modal" aria-hidden="true">
+                                          &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                       修改cookies
+                                    </h4>
+                     </div>
+                     <div class="modal-body">
+                         {#表单#}
+                        <form action={% url 'addCookies' %} method='post' role="form" class="form-horizontal">
 
                     {#防跨站#}
                     {% csrf_token %}
