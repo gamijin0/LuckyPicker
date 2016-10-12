@@ -19,5 +19,5 @@ from .views import index
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^bot/',include('Bot.urls')),
-    url(r'^',index)
+    url(r'^$',index)
 ]
