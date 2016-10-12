@@ -18,7 +18,7 @@ def addBot(request):
     try:
         if(request.method=="POST"):
             one = Bot(
-                username=request.POST['username'],
+                username=str(request.POST['username']).replace(' ',''),
                 password=request.POST['password']
             )
             if(one.username=="" or one.password==""):
