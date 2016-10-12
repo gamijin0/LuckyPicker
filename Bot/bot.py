@@ -92,10 +92,10 @@ class Bot:
     #访问主页
     def gotoIndex(self):
 
-        if(self.driver_type==None):
+        if(self.driver is None):
             #使用requests访问
             res=self.session.get(url=self.indexURL,cookies = self.cookies)
-            self.page_source = res.content.decode('utf-8')
+            self.page_source = res.content.decode('gb2312')
         else:
             #使用webdriver访问
             pass
