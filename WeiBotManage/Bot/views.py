@@ -30,6 +30,7 @@ def addBot(request):
 
     return redirect(resolve_url(to='botManage'))
 
+#用于删除用户
 def delBot(request):
     try:
         if (request.method == "POST"):
@@ -41,5 +42,19 @@ def delBot(request):
     except Exception as e:
         print(e)
         messages.error(request, str(e))
+
+    return redirect(resolve_url(to='botManage'))
+
+
+#用于添加cookies
+def addCookies(request):
+    try:
+        if(request.method=="POST"):
+            one =Bot.objects.get(username=request.POST['username'])
+            one.cookies=request.POST['newCookies']
+            print("Bot[%s]'s cookies added." % (one.username))
+            one.save()
+    except Exception as e:
+        messages.error(request,str(e))
 
     return redirect(resolve_url(to='botManage'))

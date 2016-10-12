@@ -42,6 +42,63 @@
                                 删除
                             </button>
                         </form>
+
+
+                        <button class="btn  btn-success" data-toggle="modal" data-target="#addCookies" style="font-family: 微软雅黑" >
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            修改cookies
+                        </button>
+
+                        {#用于修改cookies的模态框#}
+                        <div class="modal fade" id='addCookies' tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal" aria-hidden="true">
+                      &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                   修改cookies
+                </h4>
+             </div>
+             <div class="modal-body">
+                 {#表单#}
+                <form action={% url 'addCookies' %} method='post' role="form" class="form-horizontal">
+
+                    {#防跨站#}
+                    {% csrf_token %}
+
+                    {#表单内容 #}
+                    <div class="form-group">
+                        <label class="control-label col-md-2">账号</label>
+                        <div class="col-md-6">
+                            <input  type="hidden" name="username" value={{ b.username }}>
+                            <textarea type="text" class="form-control" name="newCookies">
+                            </textarea>
+                        </div>
+                    </div>
+
+                    {#    按钮    #}
+                    <div class="col-md-offset-1">
+                        <button type="submit" class="btn btn-danger">确认提交</button>
+                    </div>
+
+
+                </form>
+
+             </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                   data-dismiss="modal">关闭
+                </button>
+             </div>
+          </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+
+    </div>
+
                     </th>
                 </tr>
             {% endfor %}
@@ -102,5 +159,7 @@
     </div><!-- /.modal -->
 
     </div>
+
+
 
 {% endblock %}
