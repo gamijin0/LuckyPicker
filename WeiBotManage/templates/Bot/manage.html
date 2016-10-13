@@ -3,6 +3,7 @@
 {% block body %}
 
     <div>
+        {#调用 添加账号 模态框的button#}
         <button class="btn  btn-success" data-toggle="modal" data-target="#addBot" style="font-family: 微软雅黑" >
             添加账号
         </button>
@@ -22,17 +23,25 @@
         <tbody>
             {% for b in botlist %}
                 <tr>
-                    <td>{{ b.username }}</td>
-                    <td>{{ b.password }}</td>
+                    <td>
+                        {#用于复制账号#}
+                        <div id="username_text">{{ b.username }}</div>
+                        <button id="copy_username" data-clipboard-target="username_text" class="btn btn-info btn-xs">复制</button>
+                    </td>{# 账号#}
+                    <td>
+                        <div id="password_text">{{ b.password }}</div>
+                        <button id="copy_password" data-clipboard-target="password_text" class="btn btn-info btn-xs">复制</button>
+                    </td>{# 密码#}
                     <td>
                         {% if b.isValid == True %}
                             <span style="color: #4cae4c" class="glyphicon glyphicon-ok"></span>
                             {% else %}
                             <span style="color: #c7254e" class="glyphicon glyphicon-remove"></span>
                         {% endif %}
-                    </td>
-                    <td>{{ b.cookies }}</td>
+                    </td>{# Bot状态#}
+                    <td>{{ b.cookies }}</td>{# cookie#}
                     <th>
+                        {# 用于删除的form#}
                         <form method="post" action={% url 'delBot' %}>
                             {#防跨站#}
                             {% csrf_token %}
@@ -43,7 +52,7 @@
                             </button>
                         </form>
 
-
+                        {# 调用cookies模态框的按钮#}
                         <button class="btn  btn-success" data-toggle="modal" data-target="#addCookies-{{ b.username }}" style="font-family: 微软雅黑" >
                             <span class="glyphicon glyphicon-pencil"></span>
                             修改cookies
@@ -98,7 +107,7 @@
 
     </div>
 
-                    </th>
+                    </th>{# 可进行的操作#}
                 </tr>
             {% endfor %}
         </tbody>
@@ -159,6 +168,18 @@
 
     </div>
 
+    {#此js用于复制文本到clipboard#}
+    <script type="text/javascript" src="/static/js/ZeroClipboard.min.js"></script>
 
+
+    <script type="text/javascript">
+    // 定义一个新的复制对象
+    var clip_usernaem = new ZeroClipboard( document.getElementById("copy_username"), {
+      moviePath: "static/js/ZeroClipboard.swf"
+    } );
+    var clip_password = new ZeroClipboard( document.getElementById("copy_password"), {
+      moviePath: "static/js/ZeroClipboard.swf"
+    } );
+    </script>
 
 {% endblock %}
