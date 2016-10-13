@@ -22,6 +22,7 @@ class Bot:
     isLogined = bool
     loginURL = "https://passport.weibo.cn/signin/login"
     indexURL = "http://m.weibo.cn/"
+    messageURL = "http://m.weibo.cn/unread?t="
     # funcs
 
 
@@ -45,7 +46,7 @@ class Bot:
         if(self.driver is not None):
             self.driver.set_window_size(800,600)
 
-    #TODO:　decide use selenium or request
+    #TODO:　decide use selenium or requ
 
     #用于打印页面代码#
     def printHTML(self):
@@ -74,7 +75,6 @@ class Bot:
 
     #访问主页#
     def gotoIndex(self):
-
         if(self.driver is None):
             #使用requests访问
             self.cookies = self.headers.pop('Cookie')
@@ -88,3 +88,23 @@ class Bot:
         else:
             #使用webdriver访问
             pass
+
+    #用于检查现在有多少未读消息
+    def GetMessages(self):
+        import time
+        timestr = str(time.time())[0:12].replace('.','')
+        self.messageURL+=timestr
+        res=self.session.get(self.messageURL,
+                         headers = self.headers,
+                         cookies = self.cookies,
+                         )
+        import json
+        res = json.loads(res.text)
+        # qp 是首页未读消息, ht 是私信消息
+        if 'qp' in res:
+            print("账号[%s]有[%d]条新的首页消息." % (self.username,res['qp']['new']))
+        if 'ht' in res:
+            print("账号[%s]有[%d]条新的私信消息." % (self.username,res['ht']['new']))
+            return res['ht']['new']
+
+        return 0
