@@ -10,6 +10,6 @@ class Bot(models.Model):
     #是否有效
     isValid = models.BooleanField(null=False,default=False)
     #cookies
-    cookies = models.CharField(max_length=500)
+    cookies = models.CharField(max_length=2000)
     #收到的消息数量
     message_num = models.IntegerField(default=0)

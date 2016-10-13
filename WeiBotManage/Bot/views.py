@@ -52,7 +52,7 @@ def addCookies(request):
         if(request.method=="POST"):
             one =Bot.objects.get(username=request.POST['username'])
             headers_dict = headerParser(str(request.POST['newCookies']).strip())
-            one.cookies = str(headers_dict)
+            one.cookies = str(headers_dict).replace('\r','')
             print("Bot[%s]'s cookies added." % (one.username))
             one.save()
     except Exception as e:
@@ -67,6 +67,7 @@ def headerParser(headers:str):
 
     #分行
     res=[]
+    headers = str(headers).replace('\r','').replace(' ','')
     res = headers.split('\n')
     res=res[1:]
     #将每行转化为dict

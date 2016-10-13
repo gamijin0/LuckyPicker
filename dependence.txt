@@ -1,0 +1,5 @@
+django -1.8.15
+requests
+mysqlclient
+    -python3-dev
+    -...
