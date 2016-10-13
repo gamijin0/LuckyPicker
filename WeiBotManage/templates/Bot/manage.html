@@ -179,13 +179,13 @@
         {% for b in botlist %}
             // 定义一个新的复制对象
             new ZeroClipboard( document.getElementById("copy_username_{{ b.username }}"), {
-              moviePath: "static/js/ZeroClipboard.swf"
+              moviePath: "/static/js/ZeroClipboard.swf"
             } );
             new ZeroClipboard( document.getElementById("copy_password_{{ b.username }}"), {
-              moviePath: "static/js/ZeroClipboard.swf"
+              moviePath: "/static/js/ZeroClipboard.swf"
             } );
             new ZeroClipboard( document.getElementById("copy_cookies_{{ b.username }}"), {
-              moviePath: "static/js/ZeroClipboard.swf"
+              moviePath: "/static/js/ZeroClipboard.swf"
             } );
         {% endfor %}
     </script>
