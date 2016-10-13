@@ -13,26 +13,8 @@ class Bot:
 
     #if use requests###################
     session = requests.session()
-    headers = {
-        'Host': "passport.weibo.cn",
-        'User - Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0",
-        'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        'Accept - Language': "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
-        'Accept - Encoding': "gzip, deflate, br",
-        'Content - Type': "application/x-www-form-urlencoded",
-        'Referer': "https://passport.weibo.cn/signin/login",
-        'Connection': "keep-alive",
-    }
-    cookies = {
-            'H5_INDEX': "3",
-            'M_WEIBOCN_PARAMS': "uicode=20000174",
-            'H5_INDEX_TITLE': "ChaosKin9",
-            'SCF': "Alhi3iuZKNjYbnL77hWoMvkQoE4edClB0S5n_r6NteS2u6p08-Xjk7DnXr_Em6P9tglZ1FZUg-UySu_l2XM-Ex8.",
-            'SSOLoginState': "1476280075",
-            'SUB': "_2A256-k9bDeTxGeNI7lYU9ybMyDuIHXVWBVETrDV6PUJbkdBeLWnfkW1NwRHJE8cEDUvnNpgMcOSDacgpTQ..",
-            'SUHB': "0oUoVUAEYRaUmO",
-            '_T_WM': "d84a71d49bc7c7fb49b88edf731f55a3",
-        }
+    headers = dict()
+    cookies = dict()
     ###################################
 
 
