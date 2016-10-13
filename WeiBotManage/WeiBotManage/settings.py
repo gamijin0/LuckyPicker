@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Bot',
+    'django_cron',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,3 +114,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+
+
+# Add a variable called CRON_CLASSES (similar to MIDDLEWARE_CLASSES etc.) thats a list of strings
+CRON_CLASSES = [
+    "Bot.cron.BotLoginCheck",
+]

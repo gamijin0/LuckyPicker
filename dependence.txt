@@ -3,3 +3,4 @@ requests
 mysqlclient
     -python3-dev
     -...
+django_cron
