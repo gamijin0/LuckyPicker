@@ -25,10 +25,8 @@ class Bot:
     # funcs
 
 
-    """
-    初始化函数
-    """
-    def __init__(self,username:str,password:str,type:str = "PhantomJS",cookies:dict=dict()):
+    # 初始化函数
+    def __init__(self,username:str,password:str,type:str = "PhantomJS",headers:str=""):
         self.username = username
         self.password = password
         self.driver_type = type
@@ -40,19 +38,20 @@ class Bot:
         elif(self.driver_type=="None"):
             self.driver=None
 
-        if(len(cookies)!=0):
-            self.cookies = cookies
+        if(len(headers)!=0):
+            self.headers=eval(headers.replace(' ','').replace('\r',''))
 
         #设置窗口大小以防止js不绘制
         if(self.driver is not None):
             self.driver.set_window_size(800,600)
 
+    #TODO:　decide use selenium or request
 
-    #用于打印页面代码
+    #用于打印页面代码#
     def printHTML(self):
         print(self.driver.page_source)
 
-    #保存页面以检查
+    #保存页面以检查#
     def saveHTML(self):
         try:
             #创建文件夹
@@ -73,7 +72,7 @@ class Bot:
             print(e)
             exit(1)
 
-    #访问主页
+    #访问主页#
     def gotoIndex(self):
 
         if(self.driver is None):
@@ -81,6 +80,11 @@ class Bot:
             self.cookies = self.headers.pop('Cookie')
             res=self.session.get(url=self.indexURL,headers = self.headers,cookies=self.cookies)
             self.page_source = res.content.decode('utf-8')
+            if(res.status_code==200):
+                print("Login Successfully!")
+            else:
+                print("Login Failed,please check the res page and headers")
+                self.saveHTML()
         else:
             #使用webdriver访问
             pass

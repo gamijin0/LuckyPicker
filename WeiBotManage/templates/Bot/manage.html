@@ -39,7 +39,12 @@
                             <span style="color: #c7254e" class="glyphicon glyphicon-remove"></span>
                         {% endif %}
                     </td>{# Bot状态#}
-                    <td>{{ b.cookies }}</td>{# cookie#}
+
+                    <td>
+                        <div id="cookies_text_{{ b.username }}">{{ b.cookies }}</div>
+                        <button id="copy_cookies_{{ b.username }}" data-clipboard-target="cookies_text_{{ b.username }}" class="btn btn-info btn-xs">复制</button>
+                    </td>{# cookie#}
+
                     <th>
                         {# 用于删除的form#}
                         <form method="post" action={% url 'delBot' %}>
@@ -177,6 +182,9 @@
               moviePath: "static/js/ZeroClipboard.swf"
             } );
             new ZeroClipboard( document.getElementById("copy_password_{{ b.username }}"), {
+              moviePath: "static/js/ZeroClipboard.swf"
+            } );
+            new ZeroClipboard( document.getElementById("copy_cookies_{{ b.username }}"), {
               moviePath: "static/js/ZeroClipboard.swf"
             } );
         {% endfor %}
