@@ -12,7 +12,7 @@
 
 
     {#用于展示机器人列表的table#}
-    <table class="table table-bordered table-responsive">
+    <table class="table table-bordered table-hover">
         <thead>
             <th>账号</th>
             <th>密码</th>
@@ -25,12 +25,12 @@
                 <tr>
                     <td>
                         {#用于复制账号#}
-                        <div id="username_text">{{ b.username }}</div>
-                        <button id="copy_username" data-clipboard-target="username_text" class="btn btn-info btn-xs">复制</button>
+                        <div id="username_text_{{ b.username }}">{{ b.username }}</div>
+                        <button id="copy_username_{{ b.username }}" data-clipboard-target="username_text_{{ b.username }}" class="btn btn-info btn-xs">复制</button>
                     </td>{# 账号#}
                     <td>
-                        <div id="password_text">{{ b.password }}</div>
-                        <button id="copy_password" data-clipboard-target="password_text" class="btn btn-info btn-xs">复制</button>
+                        <div id="password_text_{{ b.username }}">{{ b.password }}</div>
+                        <button id="copy_password_{{ b.username }}" data-clipboard-target="password_text_{{ b.username }}" class="btn btn-info btn-xs">复制</button>
                     </td>{# 密码#}
                     <td>
                         {% if b.isValid == True %}
@@ -173,13 +173,14 @@
 
 
     <script type="text/javascript">
-    // 定义一个新的复制对象
-    var clip_usernaem = new ZeroClipboard( document.getElementById("copy_username"), {
-      moviePath: "static/js/ZeroClipboard.swf"
-    } );
-    var clip_password = new ZeroClipboard( document.getElementById("copy_password"), {
-      moviePath: "static/js/ZeroClipboard.swf"
-    } );
+        {% for b in botlist %}
+            // 定义一个新的复制对象
+            new ZeroClipboard( document.getElementById("copy_username_{{ b.username }}"), {
+              moviePath: "static/js/ZeroClipboard.swf"
+            } );
+            new ZeroClipboard( document.getElementById("copy_password_{{ b.username }}"), {
+              moviePath: "static/js/ZeroClipboard.swf"
+            } );
+        {% endfor %}
     </script>
-
 {% endblock %}
