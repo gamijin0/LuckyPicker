@@ -78,7 +78,10 @@ class Bot:
         if(self.driver is None):
             #使用requests访问
             self.cookies = self.headers.pop('Cookie')
-            res=self.session.get(url=self.indexURL,headers = self.headers,cookies=self.cookies)
+            res=self.session.get(
+                url=self.indexURL,
+                headers = self.headers,
+                cookies=self.cookies)
             self.page_source = res.content.decode('utf-8')
             if(res.status_code==200):
                 print("Bot[%s] Login Successfully!" % self.username)
@@ -171,5 +174,32 @@ class Bot:
             #self.saveHTML()
             #self.page_source = resp.content.decode('utf-8')
             #print (resp)
+        except Exception as e:
+            print(e)
+
+
+    #关注微博用户
+    def Care(self,uid:int):
+        data={
+            'uid':uid,
+        }
+        try:
+            headers = self.headers
+            headers.setdefault("Referer","http://m.weibo.cn/u/%d" %(uid))
+            #headers.setdefault("Accept","application/json, text/javascript, */*; q=0.01")
+            #print(headers)
+            resp=self.session.post(
+                url="http://m.weibo.cn/attentionDeal/addAttention?",
+                headers=headers,
+                cookies=self.cookies,
+                data=data,
+            )
+            # if (resp.status_code ==200):
+            #     import datetime
+            #     print("账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
+
+            self.saveHTML()
+            self.page_source = resp.content.decode('utf-8')
+            print (resp)
         except Exception as e:
             print(e)
