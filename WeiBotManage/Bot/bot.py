@@ -186,20 +186,15 @@ class Bot:
         try:
             headers = self.headers
             headers.setdefault("Referer","http://m.weibo.cn/u/%d" %(uid))
-            #headers.setdefault("Accept","application/json, text/javascript, */*; q=0.01")
-            #print(headers)
             resp=self.session.post(
                 url="http://m.weibo.cn/attentionDeal/addAttention?",
                 headers=headers,
                 cookies=self.cookies,
                 data=data,
             )
-            # if (resp.status_code ==200):
-            #     import datetime
-            #     print("账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
-
-            self.saveHTML()
-            self.page_source = resp.content.decode('utf-8')
-            print (resp)
+            #无论是否已经关注，都返回关注
+            if (resp.status_code ==200):
+                 import datetime
+                 print("账号[%s]关注用户%d成功[%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
