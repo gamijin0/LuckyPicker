@@ -113,3 +113,35 @@ class Bot:
             return res['ht']['new']
 
         return 0
+
+
+    #用户发送微博
+    def sendWeibo(self,content:str):
+
+        data = {
+            'content':content,
+            'annotations': "",
+            'st': "3afdec",
+            }
+        try:
+
+            cookies = self.cookies
+            headers = self.headers
+            headers.setdefault("Referer","http://m.weibo.cn/mblog")
+
+            resp = self.session.post(
+                url="http://m.weibo.cn/mblogDeal/addAMblog",
+                data=data,
+                headers = self.headers,
+                cookies = cookies,
+            )
+            # self.page_source=resp.content.decode('utf-8')
+            # self.saveHTML()
+            if(resp.status_code==200):
+                import json,datetime
+                res=json.loads(resp.text)
+                if(res['ok']==1):
+                    print("账号[%s]发送微博成功[%s]." % (self.username,datetime.datetime.now()))
+
+        except Exception as e:
+            print(e)
