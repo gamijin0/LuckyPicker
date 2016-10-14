@@ -97,6 +97,7 @@ class Bot:
     def GetMessages(self):
         import time
         timestr = str(time.time())[0:12].replace('.','')
+        print(time.time())
         self.messageURL+=timestr
         res=self.session.get(self.messageURL,
                          headers = self.headers,
@@ -104,7 +105,7 @@ class Bot:
                          )
         import json
         res = json.loads(res.text)
-        # print(res)
+        #print(res)
         # qp 是首页未读消息, ht 是私信消息
         if 'qp' in res and 'new' in res['qp']:
             print("账号[%s]有[%d]条新的首页消息." % (self.username,res['qp']['new']))
@@ -143,5 +144,32 @@ class Bot:
                 if(res['ok']==1):
                     print("账号[%s]发送微博成功[%s]." % (self.username,datetime.datetime.now()))
 
+        except Exception as e:
+            print(e)
+
+
+    #转发微博
+    def TransmitWeibo(self,content:str,id:int):
+        data={
+            'content': content,
+            'id':id,
+            'annotations': "",
+            'st':"aa11fd",
+        }
+        try:
+            headers = self.headers
+            headers.setdefault("Referer", "http://m.weibo.cn/repost?id=%d" %(id))
+            resp=self.session.post(
+                url="http://m.weibo.cn/mblogDeal/rtMblog",
+                headers=headers,
+                cookies=self.cookies,
+                data=data,
+            )
+            if (resp.status_code ==200):
+                import datetime
+                print("账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
+            #self.saveHTML()
+            #self.page_source = resp.content.decode('utf-8')
+            #print (resp)
         except Exception as e:
             print(e)

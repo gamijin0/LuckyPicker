@@ -11,3 +11,4 @@ if __name__=="__main__":
     # # one.saveHTML()
     one.gotoIndex()
     one.GetMessages()
+    #one.TransmitWeibo("sb",4030459975446407)
