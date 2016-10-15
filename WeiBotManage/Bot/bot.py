@@ -152,6 +152,7 @@ class Bot:
 
 
     #转发微博
+    #content:微博评论.如需@用户，直接输入“@用户名“
     def TransmitWeibo(self,content:str,id:int):
         data={
             'content': content,

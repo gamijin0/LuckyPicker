@@ -11,5 +11,5 @@ if __name__=="__main__":
     # # one.saveHTML()
     one.gotoIndex()
     one.GetMessages()
-    #one.TransmitWeibo("无语",4030459975446407)
-    one.Care(1426725707)
+    #one.TransmitWeibo("@ExcuteK 张宇是个大傻逼",4030469299805026)
+    #one.Care(1863157844)
