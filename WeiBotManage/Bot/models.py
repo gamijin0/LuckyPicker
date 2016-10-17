@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Bot(models.Model):
+class Bot_db(models.Model):
     #账号
     username = models.CharField(primary_key=True,null=False,max_length=50)
     #密码

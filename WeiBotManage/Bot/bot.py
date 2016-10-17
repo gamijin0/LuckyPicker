@@ -64,7 +64,7 @@ class Bot:
                 os.mkdir(filepath)
             #文件名
             import datetime
-            filename = "%s[%s].htm" % (self.username,str(datetime.datetime.now())[-12:-7])
+            filename = "%s[%s].htm" % (self.username,str(datetime.datetime.now())[-15:-7])
             #存储html
             with open(os.path.join(filepath,filename),'w') as f:
                 f.write(self.page_source)

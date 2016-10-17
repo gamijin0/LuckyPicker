@@ -1,5 +1,5 @@
 from django_cron import CronJobBase,Schedule
-from .models import Bot as Bot_db
+from .models import Bot_db as Bot_db
 from .bot import Bot
 
 

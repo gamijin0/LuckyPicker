@@ -3,25 +3,10 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li>
-                <a href="javascript:;" data-toggle="collapse" data-target="#demo">
-                    <i class="fa fa-fw fa-weibo"></i>
-                        Bot
-                    <i class="fa fa-fw fa-caret-down"></i>
+                <a href={% url "botManage" %}>
+                    <i class="fa fa-fw fa-list"></i>
+                        账号列表
                 </a>
-                <ul id="demo" class="collapse">
-                    <li>
-                        <a href={% url "botManage" %}>
-                            <i class="fa fa-fw fa-list"></i>
-                            账号列表
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-fw fa-pencil"></i>
-                            cookies填写
-                        </a>
-                    </li>
-                </ul>
             </li>
         </ul>
     </div>

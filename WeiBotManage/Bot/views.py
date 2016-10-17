@@ -1,11 +1,12 @@
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
-from .models import Bot
+from .models import Bot_db
+from .bot import Bot
 # Create your views here.
 
 #显示管理页面
 def manage(request):
-    botlist = Bot.objects.all()
+    botlist = Bot_db.objects.all()
     kwvars={
         'botlist':botlist,
     }
@@ -17,7 +18,7 @@ def addBot(request):
 
     try:
         if(request.method=="POST"):
-            one = Bot(
+            one = Bot_db(
                 username=str(request.POST['username']).replace(' ',''),
                 password=request.POST['password']
             )
@@ -34,10 +35,10 @@ def addBot(request):
 def delBot(request):
     try:
         if (request.method == "POST"):
-            oneToDel = Bot.objects.get(username=request.POST['username'])
+            oneToDel = Bot_db.objects.get(username=request.POST['username'])
             if(oneToDel.isValid==True):
                 raise Exception("无法删除正在运行的账号！")
-            Bot.delete(oneToDel)
+            Bot_db.delete(oneToDel)
             print("One Bot[%s] deleted." % (oneToDel.username))
     except Exception as e:
         print(e)
@@ -50,7 +51,7 @@ def delBot(request):
 def addCookies(request):
     try:
         if(request.method=="POST"):
-            one =Bot.objects.get(username=request.POST['username'])
+            one =Bot_db.objects.get(username=request.POST['username'])
             headers_dict = headerParser(str(request.POST['newCookies']).strip())
             one.cookies = str(headers_dict).replace('\r','')
             print("Bot[%s]'s cookies added." % (one.username))
@@ -85,7 +86,20 @@ def headerParser(headers:str):
 
 #页面上手动执行检查Bot状态
 def checkBotStatusManually(request):
-    from .cron import BotLoginCheck
-    one = BotLoginCheck()
-    one.do()
+
+    bot_dblist = Bot_db.objects.all()
+    for bot_db in bot_dblist:
+        if (len(bot_db.cookies) != 0):
+            # 若有cookie则进行检查
+            one = Bot(
+                username=bot_db.username,
+                password=bot_db.password,
+                type="None",
+                headers=bot_db.cookies
+            )
+            bot_db.isValid = one.gotoIndex()  # 返回bool
+        else:
+            # 无cookies必无效
+            bot_db.isValid = False
+        bot_db.save()
     return redirect(resolve_url(to='botManage'))
