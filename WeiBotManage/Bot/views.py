@@ -82,3 +82,10 @@ def headerParser(headers:str):
     res_dict['Cookie'] = cookie_dict
     return res_dict
 
+
+#页面上手动执行检查Bot状态
+def checkBotStatusManually(request):
+    from .cron import BotLoginCheck
+    one = BotLoginCheck()
+    one.do()
+    return redirect(resolve_url(to='botManage'))

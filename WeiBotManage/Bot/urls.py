@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^addBot',view=addBot,name='addBot'),
     url(r'^delBot',view=delBot,name='delBot'),
     url(r'^addCookies',view=addCookies,name='addCookies'),
+    url(r'checkBotStatus',view=checkBotStatusManually,name='checkBotStatus')
 ]
