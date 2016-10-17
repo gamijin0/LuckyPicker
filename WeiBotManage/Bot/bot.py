@@ -78,7 +78,10 @@ class Bot:
         if(self.driver is None):
             #使用requests访问
             self.cookies = self.headers.pop('Cookie')
-            res=self.session.get(url=self.indexURL,headers = self.headers,cookies=self.cookies)
+            res=self.session.get(
+                url=self.indexURL,
+                headers = self.headers,
+                cookies=self.cookies)
             self.page_source = res.content.decode('utf-8')
             if(res.status_code==200):
                 print("Bot[%s] Login Successfully!" % self.username)
@@ -97,6 +100,7 @@ class Bot:
     def GetMessages(self):
         import time
         timestr = str(time.time())[0:12].replace('.','')
+        print(time.time())
         self.messageURL+=timestr
         res=self.session.get(self.messageURL,
                          headers = self.headers,
@@ -104,7 +108,7 @@ class Bot:
                          )
         import json
         res = json.loads(res.text)
-        # print(res)
+        #print(res)
         # qp 是首页未读消息, ht 是私信消息
         if 'qp' in res and 'new' in res['qp']:
             print("账号[%s]有[%d]条新的首页消息." % (self.username,res['qp']['new']))
@@ -113,3 +117,85 @@ class Bot:
             return res['ht']['new']
 
         return 0
+
+
+    #用户发送微博
+    def sendWeibo(self,content:str):
+
+        data = {
+            'content':content,
+            'annotations': "",
+            'st': "3afdec",
+            }
+        try:
+
+            cookies = self.cookies
+            headers = self.headers
+            headers.setdefault("Referer","http://m.weibo.cn/mblog")
+
+            resp = self.session.post(
+                url="http://m.weibo.cn/mblogDeal/addAMblog",
+                data=data,
+                headers = self.headers,
+                cookies = cookies,
+            )
+            # self.page_source=resp.content.decode('utf-8')
+            # self.saveHTML()
+            if(resp.status_code==200):
+                import json,datetime
+                res=json.loads(resp.text)
+                if(res['ok']==1):
+                    print("账号[%s]发送微博成功[%s]." % (self.username,datetime.datetime.now()))
+
+        except Exception as e:
+            print(e)
+
+
+    #转发微博
+    #content:微博评论.如需@用户，直接输入“@用户名“
+    def TransmitWeibo(self,content:str,id:int):
+        data={
+            'content': content,
+            'id':id,
+            'annotations': "",
+            'st':"aa11fd",
+        }
+        try:
+            headers = self.headers
+            headers.setdefault("Referer", "http://m.weibo.cn/repost?id=%d" %(id))
+            resp=self.session.post(
+                url="http://m.weibo.cn/mblogDeal/rtMblog",
+                headers=headers,
+                cookies=self.cookies,
+                data=data,
+            )
+            if (resp.status_code ==200):
+                import datetime
+                print("账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
+            #self.saveHTML()
+            #self.page_source = resp.content.decode('utf-8')
+            #print (resp)
+        except Exception as e:
+            print(e)
+
+
+    #关注微博用户
+    def Care(self,uid:int):
+        data={
+            'uid':uid,
+        }
+        try:
+            headers = self.headers
+            headers.setdefault("Referer","http://m.weibo.cn/u/%d" %(uid))
+            resp=self.session.post(
+                url="http://m.weibo.cn/attentionDeal/addAttention?",
+                headers=headers,
+                cookies=self.cookies,
+                data=data,
+            )
+            #无论是否已经关注，都返回关注
+            if (resp.status_code ==200):
+                 import datetime
+                 print("账号[%s]关注用户%d成功[%s]." % (self.username,uid,datetime.datetime.now()))
+        except Exception as e:
+            print(e)
