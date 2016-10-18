@@ -98,6 +98,8 @@ def checkBotStatusManually(request):
                 headers=bot_db.cookies
             )
             bot_db.isValid = one.gotoIndex()  # 返回bool
+            if(bot_db.isValid==True):
+                bot_db.message_num = one.GetMessages()
         else:
             # 无cookies必无效
             bot_db.isValid = False

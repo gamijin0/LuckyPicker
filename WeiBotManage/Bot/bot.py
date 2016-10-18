@@ -115,6 +115,7 @@ class Bot:
         if 'ht' in res and 'new' in res['ht']:
             print("账号[%s]有[%d]条新的私信消息." % (self.username,res['ht']['new']))
             return res['ht']['new']
+        # 返回未读私信数量
 
         return 0
 

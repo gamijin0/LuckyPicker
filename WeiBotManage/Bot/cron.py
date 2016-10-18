@@ -2,6 +2,7 @@ from django_cron import CronJobBase,Schedule
 from .models import Bot_db as Bot_db
 from .bot import Bot
 
+# 暂时不使用此功能
 
 class BotLoginCheck(CronJobBase):
     # 用于循环检查所有的Bot的状态

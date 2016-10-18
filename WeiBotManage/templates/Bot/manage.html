@@ -7,7 +7,7 @@
         <button class="btn  btn-success" data-toggle="modal" data-target="#addBot" style="font-family: 微软雅黑" >
             添加账号
         </button>
-        <a class="btn btn-warning" href="checkBotStatus">检查有效性</a>
+        <a class="btn btn-warning" href="checkBotStatus">检查状态</a>
         <br><br>
     </div>
 
@@ -17,7 +17,8 @@
         <thead>
             <th>账号</th>
             <th>密码</th>
-            <th>状态</th>
+            <th>有效性</th>
+            <th>未读私信数量</th>
             <th>cookies</th>
             <th>操作</th>
         </thead>
@@ -39,8 +40,14 @@
                             {% else %}
                             <span style="color: #c7254e" class="glyphicon glyphicon-remove"></span>
                         {% endif %}
-                    </td>{# Bot状态#}
-
+                    </td>{# 有效性#}
+                    <td>
+                        {% if b.message_num == 0 %}
+                            <button class="btn btn-success btn-xs">{{ b.message_num }}</button>
+                        {% else %}
+                            <button class="btn btn-danger btn-xs">{{ b.message_num }}</button>
+                        {% endif %}
+                    </td>{# 未读私信数量 #}
                     <td>
                         <div id="cookies_text_{{ b.username }}">{{ b.cookies }}</div>
                         <button id="copy_cookies_{{ b.username }}" data-clipboard-target="cookies_text_{{ b.username }}" class="btn btn-info btn-xs">复制</button>
