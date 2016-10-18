@@ -126,8 +126,10 @@ def SearchAndStore(request):
                 weibo.blogger = blogger
                 weibo.save()
                 print("one WeiBo added into database")
+            messages.success(request,"[%d]条数据被搜索到." % len(search_res_list))
         except Exception as e:
             messages.error(request, str(e))
+
     return redirect(resolve_url(to='botManage'))
 
 
@@ -138,3 +140,17 @@ def showWeiBoInfo(request):
         'weibo_list':weibo_list,
     }
     return render_to_response("Bot/weiboList.html",kwvars,RequestContext(request))
+
+
+#转发并关注
+def careAndTransmit(request):
+    bot_db_list = Bot_db.objects.all()
+    for bot_db in bot_db_list:
+        if(bot_db.isValid==True):
+            one = Bot()
+            one.set(bot_db=bot_db)
+            for weibo in WeiBo_db.objects.all():
+                one.Care(uid=weibo.blogger.uid)
+                one.TransmitWeibo(content="手动比心...",id=weibo.id)
+
+    return redirect(resolve_url(to='botManage'))

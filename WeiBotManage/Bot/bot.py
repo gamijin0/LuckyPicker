@@ -1,4 +1,5 @@
 import requests
+from .models import Bot_db
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
@@ -28,9 +29,16 @@ class Bot:
     searchURL = "http://m.weibo.cn/container/getIndex?containerid=100103type"
     # funcs
 
+    def set(self,bot_db:Bot_db):
+        self.username = bot_db.username
+        self.password = bot_db.password
+        self.headers = eval(str(bot_db.cookies).replace(' ','').replace('\r',''))
+        self.cookies = self.headers.pop('Cookie')
+        self.driver_type="None"
+        self.driver = None
 
     # 初始化函数
-    def __init__(self,username:str,password:str,type:str = "PhantomJS",headers:str=""):
+    def __init__(self,username:str = "",password:str = "",type:str = "PhantomJS",headers:str=""):
         self.username = username
         self.password = password
         self.driver_type = type
@@ -112,9 +120,9 @@ class Bot:
         #print(res)
         # qp 是首页未读消息, ht 是私信消息
         if 'qp' in res and 'new' in res['qp']:
-            print("账号[%s]有[%d]条新的首页消息." % (self.username,res['qp']['new']))
+            print("账号[%s]有[%d]条新的首页消息." % (self.username,int(res['qp']['new'])))
         if 'ht' in res and 'new' in res['ht']:
-            print("账号[%s]有[%d]条新的私信消息." % (self.username,res['ht']['new']))
+            print("账号[%s]有[%d]条新的私信消息." % (self.username,int(res['ht']['new'])))
             return res['ht']['new']
         # 返回未读私信数量
 
@@ -166,7 +174,7 @@ class Bot:
         }
         try:
             headers = self.headers
-            headers.setdefault("Referer", "http://m.weibo.cn/repost?id=%d" %(id))
+            headers.setdefault("Referer", "http://m.weibo.cn/repost?id=%d" % int(id))
             resp=self.session.post(
                 url="http://m.weibo.cn/mblogDeal/rtMblog",
                 headers=headers,
@@ -191,7 +199,7 @@ class Bot:
         }
         try:
             headers = self.headers
-            headers.setdefault("Referer","http://m.weibo.cn/u/%d" %(uid))
+            headers.setdefault("Referer","http://m.weibo.cn/u/%s" %(uid))
             resp=self.session.post(
                 url="http://m.weibo.cn/attentionDeal/addAttention?",
                 headers=headers,
@@ -201,7 +209,7 @@ class Bot:
             #无论是否已经关注，都返回关注
             if (resp.status_code ==200):
                  import datetime
-                 print("账号[%s]关注用户%d成功[%s]." % (self.username,uid,datetime.datetime.now()))
+                 print("账号[%s]关注用户[%s]成功[%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
 

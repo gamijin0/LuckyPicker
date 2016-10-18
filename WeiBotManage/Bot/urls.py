@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^checkBotStatus',view=checkBotStatusManually,name='checkBotStatus'),
     url(r'^search',view=SearchAndStore,name='search'),
     url(r'^weiboInfo',view=showWeiBoInfo,name='weiboInfo'),
+    url(r'^careAndTransmit', view=careAndTransmit, name='careAndTransmit'),
 ]
