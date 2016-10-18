@@ -1,5 +1,6 @@
 import requests
 from selenium import webdriver
+from bs4 import BeautifulSoup
 
 class Bot:
     # attrs
@@ -23,6 +24,8 @@ class Bot:
     loginURL = "https://passport.weibo.cn/signin/login"
     indexURL = "http://m.weibo.cn/"
     messageURL = "http://m.weibo.cn/unread?t="
+    # searchURL = "http://m.weibo.cn/p/index?containerid=100103type=&q="
+    searchURL = "http://m.weibo.cn/container/getIndex?containerid=100103type"
     # funcs
 
 
@@ -41,12 +44,11 @@ class Bot:
 
         if(len(headers)!=0):
             self.headers=eval(headers.replace(' ','').replace('\r',''))
-
+            self.cookies = self.headers.pop('Cookie')
         #设置窗口大小以防止js不绘制
         if(self.driver is not None):
             self.driver.set_window_size(800,600)
 
-    #TODO:　decide use selenium or requ
 
     #用于打印页面代码#
     def printHTML(self):
@@ -64,7 +66,8 @@ class Bot:
                 os.mkdir(filepath)
             #文件名
             import datetime
-            filename = "%s[%s].htm" % (self.username,str(datetime.datetime.now())[-15:-7])
+            now = datetime.datetime.now()
+            filename = "[%s日%s时%s分]%s.htm" % (now.day,now.hour,now.minute,self.username)
             #存储html
             with open(os.path.join(filepath,filename),'w') as f:
                 f.write(self.page_source)
@@ -73,11 +76,10 @@ class Bot:
             print(e)
             exit(1)
 
-    #访问主页#
+    #访问主页,现用作登录测试
     def gotoIndex(self):
         if(self.driver is None):
             #使用requests访问
-            self.cookies = self.headers.pop('Cookie')
             res=self.session.get(
                 url=self.indexURL,
                 headers = self.headers,
@@ -100,7 +102,6 @@ class Bot:
     def GetMessages(self):
         import time
         timestr = str(time.time())[0:12].replace('.','')
-        print(time.time())
         self.messageURL+=timestr
         res=self.session.get(self.messageURL,
                          headers = self.headers,
@@ -121,6 +122,7 @@ class Bot:
 
 
     #用户发送微博
+    #content:文字内容
     def sendWeibo(self,content:str):
 
         data = {
@@ -154,6 +156,7 @@ class Bot:
 
     #转发微博
     #content:微博评论.如需@用户，直接输入“@用户名“
+    #id:微博id
     def TransmitWeibo(self,content:str,id:int):
         data={
             'content': content,
@@ -181,6 +184,7 @@ class Bot:
 
 
     #关注微博用户
+    #uid:用户id
     def Care(self,uid:int):
         data={
             'uid':uid,
@@ -200,3 +204,30 @@ class Bot:
                  print("账号[%s]关注用户%d成功[%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
+
+
+    #根据关键词进行搜索相关WeiBo
+    #content:关键词
+    #return:(uid,id,text)
+    def Search(self,content:str):
+        import urllib
+        queryStr = "=&q="+content
+        queryStr = urllib.parse.quote(queryStr)
+        referURL = "http://m.weibo.cn/p/index?containerid=100103type"+queryStr
+        print(referURL)
+        tmpHeaders = self.headers
+        tmpHeaders.setdefault('Referer',referURL)
+        res=self.session.get(
+            url=self.searchURL+queryStr,
+            # cookies=self.cookies,
+            headers = tmpHeaders,
+        )
+        import json
+        res = json.loads(res.text)
+        cards = res['cards']
+        res_list =list()
+        for i in cards[2]['card_group']:
+            one = (str(i['mblog']['user']['id']),str(i['mblog']['id']),str(i['mblog']['text']))
+            res_list.append(one)
+
+        return res_list

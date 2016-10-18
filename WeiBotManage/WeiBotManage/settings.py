@@ -121,3 +121,6 @@ STATICFILES_FINDERS = (
 CRON_CLASSES = [
     "Bot.cron.BotLoginCheck",
 ]
+
+
+DEFAULT_CHARSET = 'utf-8'
