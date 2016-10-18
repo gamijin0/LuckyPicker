@@ -209,7 +209,6 @@ class Bot:
 
     #根据关键词进行搜索相关WeiBo
     #content:关键词
-    #TODO:what should this func return ?
     def Search(self,content:str):
         import urllib
         queryStr = "=&q="+content
@@ -227,6 +226,9 @@ class Bot:
         res = json.loads(res.text)
         print(res)
         cards = res['cards']
+        res_list =list()
         for i in cards[2]['card_group']:
-            print("WeiBo_ID:"+str(i['mblog']['id']))
-            print("USER_ID:"+str(i['mblog']['user']['id']))
+            one = (str(i['mblog']['user']['id']),str(i['mblog']['id']))
+            res_list.append(one)
+
+        return res_list
