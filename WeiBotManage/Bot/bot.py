@@ -228,7 +228,6 @@ class Bot:
         res_list =list()
         for i in cards[2]['card_group']:
             one = (str(i['mblog']['user']['id']),str(i['mblog']['id']),str(i['mblog']['text']))
-            print(one)
             res_list.append(one)
 
         return res_list

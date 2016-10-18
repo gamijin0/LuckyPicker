@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^addCookies',view=addCookies,name='addCookies'),
     url(r'^checkBotStatus',view=checkBotStatusManually,name='checkBotStatus'),
     url(r'^search',view=SearchAndStore,name='search'),
-
+    url(r'^weiboInfo',view=showWeiBoInfo,name='weiboInfo'),
 ]

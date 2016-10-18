@@ -1,0 +1,20 @@
+{% extends "common/base.html" %}
+{% block body %}
+    <table class="table table-bordered table-responsive table-hover">
+        <thead>
+            <th>Blogger_id</th>
+            <th>WeiBo_id</th>
+            <th>WeiBo_content</th>
+        </thead>
+        <tbody>
+
+            {% for i in weibo_list %}
+                <tr>
+                    <td>{{ i.blogger.uid }}</td>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.content }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

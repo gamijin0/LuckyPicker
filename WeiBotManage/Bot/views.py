@@ -124,5 +124,15 @@ def SearchAndStore(request):
             blogger.save()
             weibo.blogger = blogger
             weibo.save()
+            print("one WeiBo ")
 
     return redirect(resolve_url(to='botManage'))
+
+
+#显示当前搜索到的微博信息
+def showWeiBoInfo(request):
+    weibo_list = WeiBo_db.objects.all()
+    kwvars={
+        'weibo_list':weibo_list,
+    }
+    return render_to_response("Bot/weiboList.html",kwvars,RequestContext(request))
