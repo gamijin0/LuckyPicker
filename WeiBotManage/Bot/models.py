@@ -13,3 +13,17 @@ class Bot_db(models.Model):
     cookies = models.CharField(max_length=2000)
     #收到的消息数量
     message_num = models.IntegerField(default=0)
+
+
+class Blogger(models.Model):
+    #博主账号id
+    uid = models.CharField(primary_key=True,null=False,max_length=100)
+    #是否已关注
+    isCared = models.BooleanField(default=False)
+
+
+class WeiBo(models.Model):
+    #微博id
+    id = models.CharField(primary_key=True,null=False,max_length=100)
+    #所属博主
+    blogger = models.ForeignKey(Blogger)
