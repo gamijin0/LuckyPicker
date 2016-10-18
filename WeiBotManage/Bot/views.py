@@ -105,3 +105,20 @@ def checkBotStatusManually(request):
             bot_db.isValid = False
         bot_db.save()
     return redirect(resolve_url(to='botManage'))
+
+
+#搜索合适的微博并存入数据库,以便以后使用
+def SearchAndStore(request):
+    if(request.method=='GET'):
+        bot_db = Bot_db.objects.all()[0]
+        one = Bot(
+            username=bot_db.username,
+            password=bot_db.password,
+            type="None",
+            headers=bot_db.cookies,
+        )
+        search_res_list = one.Search(u'微博抽奖平台 红包')
+        print(search_res_list)
+
+
+    return redirect(resolve_url(to='botManage'))

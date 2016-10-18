@@ -209,6 +209,7 @@ class Bot:
 
     #根据关键词进行搜索相关WeiBo
     #content:关键词
+    #return:(uid,id,text)
     def Search(self,content:str):
         import urllib
         queryStr = "=&q="+content
@@ -219,16 +220,16 @@ class Bot:
         tmpHeaders.setdefault('Referer',referURL)
         res=self.session.get(
             url=self.searchURL+queryStr,
-            cookies=self.cookies,
+            # cookies=self.cookies,
             headers = tmpHeaders,
         )
         import json
         res = json.loads(res.text)
-        print(res)
         cards = res['cards']
         res_list =list()
         for i in cards[2]['card_group']:
-            one = (str(i['mblog']['user']['id']),str(i['mblog']['id']))
+            one = (str(i['mblog']['user']['id']),str(i['mblog']['id']),str(i['mblog']['text']))
+            print(one)
             res_list.append(one)
 
         return res_list

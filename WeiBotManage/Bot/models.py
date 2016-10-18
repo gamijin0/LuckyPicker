@@ -27,3 +27,5 @@ class WeiBo(models.Model):
     id = models.CharField(primary_key=True,null=False,max_length=100)
     #所属博主
     blogger = models.ForeignKey(Blogger)
+    #内容
+    content = models.CharField(null=True,max_length=1000)
