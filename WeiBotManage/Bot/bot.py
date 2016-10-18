@@ -23,6 +23,7 @@ class Bot:
     loginURL = "https://passport.weibo.cn/signin/login"
     indexURL = "http://m.weibo.cn/"
     messageURL = "http://m.weibo.cn/unread?t="
+    searchURL = "http://m.weibo.cn/searchs/result?type=all&queryVal="
     # funcs
 
 
@@ -46,7 +47,6 @@ class Bot:
         if(self.driver is not None):
             self.driver.set_window_size(800,600)
 
-    #TODO:　decide use selenium or requ
 
     #用于打印页面代码#
     def printHTML(self):
@@ -64,7 +64,9 @@ class Bot:
                 os.mkdir(filepath)
             #文件名
             import datetime
-            filename = "%s[%s].htm" % (self.username,str(datetime.datetime.now())[-15:-7])
+            now = datetime.datetime.now()
+            str(datetime.datetime.now())[-15:-7]
+            filename = "%s[%s日%s时%s分].htm" % (self.username,now.day,now.hour,now.minute)
             #存储html
             with open(os.path.join(filepath,filename),'w') as f:
                 f.write(self.page_source)
@@ -200,3 +202,13 @@ class Bot:
                  print("账号[%s]关注用户%d成功[%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
+
+
+    #根据关键词进行搜索相关WeiBo
+    def Search(self,content:str):
+        res=self.session.get(
+            url=self.searchURL+content,
+            cookies=self.cookies,
+        )
+        self.page_source = res.text
+        self.saveHTML()
