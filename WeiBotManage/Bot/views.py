@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
-from .models import Bot_db
+from .models import Bot_db,WeiBo_db,Blogger_db
 from .bot import Bot
 # Create your views here.
 
@@ -118,7 +118,11 @@ def SearchAndStore(request):
             headers=bot_db.cookies,
         )
         search_res_list = one.Search(u'微博抽奖平台 红包')
-        print(search_res_list)
-
+        for tu in search_res_list:
+            weibo = WeiBo_db(id=tu[1],content=tu[2])
+            blogger = Blogger_db(uid=tu[0])
+            blogger.save()
+            weibo.blogger = blogger
+            weibo.save()
 
     return redirect(resolve_url(to='botManage'))

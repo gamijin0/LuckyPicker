@@ -44,7 +44,7 @@ class Bot:
 
         if(len(headers)!=0):
             self.headers=eval(headers.replace(' ','').replace('\r',''))
-
+            self.cookies = self.headers.pop('Cookie')
         #设置窗口大小以防止js不绘制
         if(self.driver is not None):
             self.driver.set_window_size(800,600)
@@ -80,7 +80,6 @@ class Bot:
     def gotoIndex(self):
         if(self.driver is None):
             #使用requests访问
-            self.cookies = self.headers.pop('Cookie')
             res=self.session.get(
                 url=self.indexURL,
                 headers = self.headers,
