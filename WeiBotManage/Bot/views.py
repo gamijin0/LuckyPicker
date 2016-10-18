@@ -117,15 +117,17 @@ def SearchAndStore(request):
             type="None",
             headers=bot_db.cookies,
         )
-        search_res_list = one.Search(u'微博抽奖平台 红包')
-        for tu in search_res_list:
-            weibo = WeiBo_db(id=tu[1],content=tu[2])
-            blogger = Blogger_db(uid=tu[0])
-            blogger.save()
-            weibo.blogger = blogger
-            weibo.save()
-            print("one WeiBo ")
-
+        try:
+            search_res_list = one.Search(u'微博抽奖平台 红包')
+            for tu in search_res_list:
+                weibo = WeiBo_db(id=tu[1],content=tu[2])
+                blogger = Blogger_db(uid=tu[0])
+                blogger.save()
+                weibo.blogger = blogger
+                weibo.save()
+                print("one WeiBo added into database")
+        except Exception as e:
+            messages.error(request, str(e))
     return redirect(resolve_url(to='botManage'))
 
 
