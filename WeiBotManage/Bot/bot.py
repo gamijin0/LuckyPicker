@@ -3,6 +3,11 @@ from .models import Bot_db,TransmitedRelationship,WeiBo_db
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
+
 class Bot:
     # attrs
     username = str
