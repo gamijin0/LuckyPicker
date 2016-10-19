@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
-from .models import Bot_db,WeiBo_db,Blogger_db
+from .models import Bot_db,WeiBo_db,Blogger_db,TransmitedRelationship
 from .bot import Bot
 # Create your views here.
 
@@ -144,6 +144,8 @@ def showWeiBoInfo(request):
 
 #转发并关注
 def careAndTransmit(request):
+    LIMIT_NUM = 3 #转发限制
+    limit = 1
     bot_db_list = Bot_db.objects.all()
     for bot_db in bot_db_list:
         if(bot_db.isValid==True):
@@ -151,6 +153,12 @@ def careAndTransmit(request):
             one.set(bot_db=bot_db)
             for weibo in WeiBo_db.objects.all():
                 one.Care(uid=weibo.blogger.uid)
-                one.TransmitWeibo(content="手动比心...",id=weibo.id)
+                if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
+                    one.TransmitWeibo(content="手动比心...",id=weibo.id)
+                    limit+=1
+                    if(limit>LIMIT_NUM):
+                        break
+                else:
+                    print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
 
     return redirect(resolve_url(to='botManage'))

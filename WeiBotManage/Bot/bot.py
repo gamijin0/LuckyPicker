@@ -1,5 +1,5 @@
 import requests
-from .models import Bot_db
+from .models import Bot_db,TransmitedRelationship,WeiBo_db
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
@@ -93,7 +93,10 @@ class Bot:
                 headers = self.headers,
                 cookies=self.cookies)
             self.page_source = res.content.decode('utf-8')
-            if(res.status_code==200):
+            bs = BeautifulSoup(res.text,'lxml')
+            # if (bs.title is not None):
+            #     print(bs.title.string)
+            if(bs.title is not None and bs.title.string==u"微博 - 随时随地发现新鲜事"):
                 print("Bot[%s] Login Successfully!" % self.username)
                 return True
             else:
@@ -115,15 +118,15 @@ class Bot:
                          headers = self.headers,
                          cookies = self.cookies,
                          )
+        print(res.text)
         import json
         res = json.loads(res.text)
-        #print(res)
         # qp 是首页未读消息, ht 是私信消息
-        if 'qp' in res and 'new' in res['qp']:
-            print("账号[%s]有[%d]条新的首页消息." % (self.username,int(res['qp']['new'])))
-        if 'ht' in res and 'new' in res['ht']:
-            print("账号[%s]有[%d]条新的私信消息." % (self.username,int(res['ht']['new'])))
-            return res['ht']['new']
+        # if 'qp' in res and 'new' in res['qp']:
+        #     print("账号[%s]有[%d]条新的首页消息." % (self.username,int(res['qp']['new'])))
+        if 'ht' in res and 'sx' in res['ht']:
+            print("账号[%s]有[%d]条新的私信消息." % (self.username,int(res['ht']['sx'])))
+            return res['ht']['sx']
         # 返回未读私信数量
 
         return 0
@@ -184,8 +187,15 @@ class Bot:
             if (resp.status_code ==200):
                 import datetime
                 print("账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
-            #self.saveHTML()
-            #self.page_source = resp.content.decode('utf-8')
+                #记录下转发关系
+                one = TransmitedRelationship()
+                one.bot_id = self.username
+                one.weibo_id = id
+                one.save()
+
+            self.page_source = resp.content.decode('utf-8')
+            self.saveHTML()
+
             #print (resp)
         except Exception as e:
             print(e)

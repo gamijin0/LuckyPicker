@@ -29,3 +29,10 @@ class WeiBo_db(models.Model):
     blogger = models.ForeignKey(Blogger_db)
     #内容
     content = models.CharField(null=True,max_length=1000)
+
+
+class TransmitedRelationship(models.Model):
+    #账号
+    bot_id = models.CharField(null=False,max_length=100)
+    #微博
+    weibo_id = models.CharField(null=False,max_length=100)
