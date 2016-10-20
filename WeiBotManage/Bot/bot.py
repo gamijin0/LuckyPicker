@@ -282,12 +282,6 @@ class Bot:
             proxyTemp = {"http": ip_temp}
             one.proxy = ip_temp
             one.save()
-        proxies = ProxyRecord()
-        for proxy in proxies:
-            try:
-                # res = urllib.urlopen(url, proxies=proxy).read()
-                res=requests.get("http://ip.chinaz.com/getip.aspx",proxies=proxy)
-            except Exception as e:
-                print(proxy+"已失效")
-                print(e)
-                continue
+        one.checkProxy()
+        import random
+        return one.objects.all()[random.randint(0,one.objects.all().__len__())]
