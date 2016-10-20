@@ -1,11 +1,10 @@
 import requests
-from .models import Bot_db,TransmitedRelationship,WeiBo_db
+from .models import Bot_db,TransmitedRelationship,WeiBo_db,ProxyRecord
 from selenium import webdriver
 from bs4 import BeautifulSoup
-
-import sys
-reload(sys)
-sys.setdefaultencoding( "utf-8" )
+    # import sys
+    # reload(sys)
+    # sys.setdefaultencoding( "utf-8" )
 
 
 class Bot:
@@ -254,3 +253,41 @@ class Bot:
             res_list.append(one)
 
         return res_list
+
+
+    #使用代理ip，访问
+    #RequestURL:需要访问的URL
+    # 存取代理ip
+    def setProxy(self):
+        ProxyURL = "http://www.xicidaili.com/nn/1"
+        import requests
+        from bs4 import BeautifulSoup
+        User_Agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0'
+        header = {}
+        header['User-Agent'] = User_Agent
+        # 获取代理ip
+        res = requests.get(ProxyURL, headers=header, params=None)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text, "html.parser")
+        trs = soup.find_all('tr')
+        one = ProxyRecord()
+        temp = 0
+        for tr in trs:
+            if (temp == 0):
+                temp = 1
+                continue
+            tds = tr.find_all('td')
+            # print(tds[1].get_text())
+            ip_temp = "http://" + tds[1].get_text() + ":" + tds[2].get_text()
+            proxyTemp = {"http": ip_temp}
+            one.proxy = ip_temp
+            one.save()
+        proxies = ProxyRecord()
+        for proxy in proxies:
+            try:
+                # res = urllib.urlopen(url, proxies=proxy).read()
+                res=requests.get("http://ip.chinaz.com/getip.aspx",proxies=proxy)
+            except Exception as e:
+                print(proxy+"已失效")
+                print(e)
+                continue
