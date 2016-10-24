@@ -144,7 +144,7 @@ def showWeiBoInfo(request):
 
 #转发并关注
 def careAndTransmit(request):
-    LIMIT_NUM = 3 #转发限制
+    LIMIT_NUM = 1 #转发限制
     limit = 1
     bot_db_list = Bot_db.objects.all()
     for bot_db in bot_db_list:
