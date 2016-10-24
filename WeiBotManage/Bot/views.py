@@ -25,7 +25,7 @@ def addBot(request):
             )
             if(one.username=="" or one.password==""):
                 raise Exception(u"账号或密码不能为空.")
-            print("One Bot[%s] added." % (one.username))
+            print(u"One Bot[%s] added." % (one.username))
             one.save()
     except Exception as e:
         messages.error(request,str(e))
@@ -40,7 +40,7 @@ def delBot(request):
             if(oneToDel.isValid==True):
                 raise Exception(u"无法删除正在运行的账号！")
             Bot_db.delete(oneToDel)
-            print("One Bot[%s] deleted." % (oneToDel.username))
+            print(u"One Bot[%s] deleted." % (oneToDel.username))
     except Exception as e:
         print(e)
         messages.error(request, str(e))
@@ -55,7 +55,7 @@ def addCookies(request):
             one =Bot_db.objects.get(username=request.POST['username'])
             headers_dict = headerParser(str(request.POST['newCookies']).strip())
             one.cookies = str(headers_dict).replace('\r','')
-            print("Bot[%s]'s cookies added." % (one.username))
+            print(u"Bot[%s]'s cookies added." % (one.username))
             one.save()
     except Exception as e:
         messages.error(request,str(e))
@@ -130,7 +130,7 @@ def SearchAndStore(request):
                 blogger.save()
                 weibo.blogger = blogger
                 weibo.save()
-                print("one WeiBo[%s] added into database" % (weibo.id))
+                print(u"one WeiBo[%s] added into database" % (weibo.id))
         new_num = len(WeiBo_db.objects.all())
         print(u"total [%d] added into databases." % int(new_num-old_num))
 
@@ -148,9 +148,9 @@ def SearchAndStore(request):
 def showWeiBoInfo(request):
     weibo_list = WeiBo_db.objects.all()
     kwvars={
-        'weibo_list':weibo_list,
+        u'weibo_list':weibo_list,
     }
-    return render_to_response("Bot/weiboList.html",kwvars,RequestContext(request))
+    return render_to_response(u"Bot/weiboList.html",kwvars,RequestContext(request))
 
 
 #转发并关注
@@ -172,7 +172,7 @@ def careAndTransmit(request):
                         if(limit>LIMIT_NUM):
                             break
                     else:
-                        print("account[%s]has transmited weibo[%s]." % (bot_db.username,weibo.id))
+                        print(u"account[%s]has transmited weibo[%s]." % (bot_db.username,weibo.id))
 
     if(request is not None):
         if(count>0):
@@ -188,7 +188,7 @@ def checkProxy():
         try:
             # res = urllib.urlopen(url, proxies=proxy).read()
             import requests
-            res = requests.get("http://ip.chinaz.com/getip.aspx", proxies=proxy)
+            res = requests.get(u"http://ip.chinaz.com/getip.aspx", proxies=proxy)
         except Exception as e:
             print(proxy + u"已失效")
             proxies.delete(proxy)
