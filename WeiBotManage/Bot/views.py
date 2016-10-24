@@ -137,7 +137,7 @@ def SearchAndStore(request):
         if(request is not None):
             messages.success(request,u"total [%d] added." % int(new_num-old_num))
     except Exception as e:
-        print(u"!!Exception:[%s]" % e)
+        print(u"异常:[%s]" % e)
         if (request is not None):
             messages.error(request, str(e))
 
