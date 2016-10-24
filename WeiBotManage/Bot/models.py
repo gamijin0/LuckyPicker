@@ -36,3 +36,8 @@ class TransmitedRelationship(models.Model):
     bot_id = models.CharField(null=False,max_length=100)
     #微博
     weibo_id = models.CharField(null=False,max_length=100)
+
+
+class ProxyRecord(models.Model):
+    #代理ip
+    proxy = models.CharField(null=False,max_length=100)

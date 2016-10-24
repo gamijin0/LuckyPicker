@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
-from .models import Bot_db,WeiBo_db,Blogger_db,TransmitedRelationship
+from .models import Bot_db,WeiBo_db,Blogger_db,TransmitedRelationship,ProxyRecord
 from .bot import Bot
 # Create your views here.
 
@@ -162,3 +162,18 @@ def careAndTransmit(request):
                     print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
 
     return redirect(resolve_url(to='botManage'))
+
+#检查更新数据库中能使用的代理ip
+def checkProxy():
+    proxies = ProxyRecord()
+    for proxy in proxies:
+        try:
+            # res = urllib.urlopen(url, proxies=proxy).read()
+            import requests
+            res = requests.get("http://ip.chinaz.com/getip.aspx", proxies=proxy)
+        except Exception as e:
+            print(proxy + "已失效")
+            proxies.delete(proxy)
+            proxies.save()
+            print(e)
+            continue
