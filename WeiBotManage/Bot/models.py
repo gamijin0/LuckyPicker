@@ -27,9 +27,10 @@ class WeiBo_db(models.Model):
     id = models.CharField(primary_key=True,null=False,max_length=100)
     #所属博主
     blogger = models.ForeignKey(Blogger_db)
-    #内容
-    content = models.CharField(null=True,max_length=1000)
-
+    #抓取日期
+    date = models.DateTimeField(auto_now_add=True)
+    #是否被所有的账号转发过
+    is_done = models.BooleanField(default=False)
 
 class TransmitedRelationship(models.Model):
     #账号

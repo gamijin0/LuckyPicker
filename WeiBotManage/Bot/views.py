@@ -1,3 +1,4 @@
+
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
 from .models import Bot_db,WeiBo_db,Blogger_db,TransmitedRelationship,ProxyRecord
@@ -109,25 +110,35 @@ def checkBotStatusManually(request):
 
 #搜索合适的微博并存入数据库,以便以后使用
 def SearchAndStore(request):
-    if(request.method=='GET'):
-        bot_db = Bot_db.objects.all()[0]
-        one = Bot(
-            username=bot_db.username,
-            password=bot_db.password,
-            type="None",
-            headers=bot_db.cookies,
-        )
-        try:
-            search_res_list = one.Search(u'微博抽奖平台 红包')
-            for tu in search_res_list:
-                weibo = WeiBo_db(id=tu[1],content=tu[2])
+    bot_db_list = Bot_db.objects.all()
+    import random
+    use_num = random.randint(0,len(bot_db_list)-1)
+    bot_db = bot_db_list[use_num]
+    one = Bot(
+        username=bot_db.username,
+        password=bot_db.password,
+        type="None",
+        headers=bot_db.cookies,
+    )
+    try:
+        old_num = len(WeiBo_db.objects.all())
+        search_res_list = one.Search(u'微博抽奖平台 红包')
+        for tu in search_res_list:
+            if(u"恭喜" not in tu[2] and len(WeiBo_db.objects.filter(id=tu[1]))==0):
+                weibo = WeiBo_db(id=tu[1])
                 blogger = Blogger_db(uid=tu[0])
                 blogger.save()
                 weibo.blogger = blogger
                 weibo.save()
-                print("one WeiBo added into database")
-            messages.success(request,"[%d]条数据被搜索到." % len(search_res_list))
-        except Exception as e:
+                print("one WeiBo[%s] added into database" % (weibo.id))
+        new_num = len(WeiBo_db.objects.all())
+        print(u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+
+        if(request is not None):
+            messages.success(request,u"total [%d] added." % int(new_num-old_num))
+    except Exception as e:
+        print(u"异常:[%s]" % e)
+        if (request is not None):
             messages.error(request, str(e))
 
     return redirect(resolve_url(to='botManage'))
@@ -144,23 +155,30 @@ def showWeiBoInfo(request):
 
 #转发并关注
 def careAndTransmit(request):
-    LIMIT_NUM = 3 #转发限制
-    limit = 1
+    count = 0
+    LIMIT_NUM = 1 #转发限制
     bot_db_list = Bot_db.objects.all()
     for bot_db in bot_db_list:
         if(bot_db.isValid==True):
+            limit = 1
             one = Bot()
             one.set(bot_db=bot_db)
             for weibo in WeiBo_db.objects.all():
-                one.Care(uid=weibo.blogger.uid)
-                if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
-                    one.TransmitWeibo(content="手动比心...",id=weibo.id)
-                    limit+=1
-                    if(limit>LIMIT_NUM):
-                        break
-                else:
-                    print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
+                    one.Care(uid=weibo.blogger.uid)
+                    if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
+                        one.TransmitWeibo(content="手动比心...",id=weibo.id)
+                        limit+=1
+                        count+=1
+                        if(limit>LIMIT_NUM):
+                            break
+                    else:
+                        print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
 
+    if(request is not None):
+        if(count>0):
+            messages.success(request, "本次[%d]个账号共转发了[%d]条微博" % (len(bot_db_list),int(count)))
+        else:
+            messages.warning(request, "并未检索到最新的微博")
     return redirect(resolve_url(to='botManage'))
 
 #检查更新数据库中能使用的代理ip

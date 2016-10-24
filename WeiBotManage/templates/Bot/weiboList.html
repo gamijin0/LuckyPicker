@@ -2,17 +2,17 @@
 {% block body %}
     <table class="table table-bordered table-responsive table-hover">
         <thead>
-            <th>Blogger_id</th>
-            <th>WeiBo_id</th>
-            <th>WeiBo_content</th>
+            <th>博主id</th>
+            <th>微博id</th>
+            <th>抓取时间</th>
         </thead>
         <tbody>
 
             {% for i in weibo_list %}
                 <tr>
                     <td>{{ i.blogger.uid }}</td>
-                    <td>{{ i.id }}</td>
-                    <td>{{ i.content }}</td>
+                    <td><a href="http://m.weibo.cn/2/{{ i.id }}">{{ i.id }}</a></td>
+                    <td>{{ i.date }}</td>
                 </tr>
             {% endfor %}
         </tbody>
