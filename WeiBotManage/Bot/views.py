@@ -24,7 +24,7 @@ def addBot(request):
                 password=request.POST['password']
             )
             if(one.username=="" or one.password==""):
-                raise Exception("账号或密码不能为空.")
+                raise Exception(u"账号或密码不能为空.")
             print("One Bot[%s] added." % (one.username))
             one.save()
     except Exception as e:
@@ -38,7 +38,7 @@ def delBot(request):
         if (request.method == "POST"):
             oneToDel = Bot_db.objects.get(username=request.POST['username'])
             if(oneToDel.isValid==True):
-                raise Exception("无法删除正在运行的账号！")
+                raise Exception(u"无法删除正在运行的账号！")
             Bot_db.delete(oneToDel)
             print("One Bot[%s] deleted." % (oneToDel.username))
     except Exception as e:
@@ -166,7 +166,7 @@ def careAndTransmit(request):
             for weibo in WeiBo_db.objects.all():
                     one.Care(uid=weibo.blogger.uid)
                     if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
-                        one.TransmitWeibo(content="手动比心...",id=weibo.id)
+                        one.TransmitWeibo(content=u"手动比心...",id=weibo.id)
                         limit+=1
                         count+=1
                         if(limit>LIMIT_NUM):
@@ -176,9 +176,9 @@ def careAndTransmit(request):
 
     if(request is not None):
         if(count>0):
-            messages.success(request, "本次[%d]个账号共转发了[%d]条微博" % (len(bot_db_list),int(count)))
+            messages.success(request, u"本次[%d]个账号共转发了[%d]条微博" % (len(bot_db_list),int(count)))
         else:
-            messages.warning(request, "并未检索到最新的微博")
+            messages.warning(request, u"并未检索到最新的微博")
     return redirect(resolve_url(to='botManage'))
 
 #检查更新数据库中能使用的代理ip
@@ -190,7 +190,7 @@ def checkProxy():
             import requests
             res = requests.get("http://ip.chinaz.com/getip.aspx", proxies=proxy)
         except Exception as e:
-            print(proxy + "已失效")
+            print(proxy + u"已失效")
             proxies.delete(proxy)
             proxies.save()
             print(e)
