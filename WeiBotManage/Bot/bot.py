@@ -189,7 +189,7 @@ class Bot:
             )
             if (resp.status_code ==200):
                 import datetime
-                print(u"Account[%s] trans [%s] succeed." % (self.username, datetime.datetime.now()))
+                print(u"Account[%s] trans succeed [%s] ." % (self.username, datetime.datetime.now()))
                 #记录下转发关系
                 one = TransmitedRelationship()
                 one.bot_id = self.username
@@ -222,7 +222,8 @@ class Bot:
             #无论是否已经关注，都返回关注
             if (resp.status_code ==200):
                  import datetime
-                 print(u"账号[%s]关注用户[%s]成功[%s]." % (self.username,uid,datetime.datetime.now()))
+                 pass
+                 # print(u"账号[%s]关注用户[%s]成功[%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
 
