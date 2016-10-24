@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': "WeiBot",
         'USER': 'root',
         'PASSWORD': 'xlsd1996',
-        'HOST':"chaos.ac.cn",
+        'HOST':"115.159.55.22",
         'PORT':"", #empty with default
     }
 }
