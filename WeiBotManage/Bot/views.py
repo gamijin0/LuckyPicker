@@ -132,12 +132,12 @@ def SearchAndStore(request):
                 weibo.save()
                 print("one WeiBo[%s] added into database" % (weibo.id))
         new_num = len(WeiBo_db.objects.all())
-        print(u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+        print(u"total [%d] added into databases." % int(new_num-old_num))
 
         if(request is not None):
             messages.success(request,u"total [%d] added." % int(new_num-old_num))
     except Exception as e:
-        print(u"异常:[%s]" % e)
+        print(u"!!!Exception:[%s]" % e)
         if (request is not None):
             messages.error(request, str(e))
 
@@ -172,7 +172,7 @@ def careAndTransmit(request):
                         if(limit>LIMIT_NUM):
                             break
                     else:
-                        print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
+                        print("account[%s]has transmited weibo[%s]." % (bot_db.username,weibo.id))
 
     if(request is not None):
         if(count>0):
