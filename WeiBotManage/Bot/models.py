@@ -1,5 +1,7 @@
 from django.db import models
-
+import io
+import sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 # Create your models here.
 
 class Bot_db(models.Model):

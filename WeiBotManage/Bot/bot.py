@@ -2,6 +2,9 @@ import requests
 from .models import Bot_db,TransmitedRelationship,WeiBo_db
 from selenium import webdriver
 from bs4 import BeautifulSoup
+import io
+import sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 class Bot:
     # attrs

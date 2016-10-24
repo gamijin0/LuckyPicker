@@ -1,7 +1,9 @@
 from django_cron import CronJobBase,Schedule
 from .models import Bot_db as Bot_db
 from Bot.views import careAndTransmit,SearchAndStore
-
+import io
+import sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 # 暂时不使用此功能
 
 class BotLoginCheck(CronJobBase):
