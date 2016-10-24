@@ -109,7 +109,10 @@ def checkBotStatusManually(request):
 
 #搜索合适的微博并存入数据库,以便以后使用
 def SearchAndStore(request):
-    bot_db = Bot_db.objects.all()[0]
+    bot_db_list = Bot_db.objects.all()
+    import random
+    use_num = random.randint(0,len(bot_db_list)-1)
+    bot_db = bot_db_list[use_num]
     one = Bot(
         username=bot_db.username,
         password=bot_db.password,
@@ -120,7 +123,7 @@ def SearchAndStore(request):
         old_num = len(WeiBo_db.objects.all())
         search_res_list = one.Search(u'微博抽奖平台 红包')
         for tu in search_res_list:
-            if("恭喜" not in tu[2]):
+            if("恭喜" not in tu[2] and len(WeiBo_db.objects.filter(id=tu[1]))==0):
                 weibo = WeiBo_db(id=tu[1])
                 blogger = Blogger_db(uid=tu[0])
                 blogger.save()
@@ -133,6 +136,7 @@ def SearchAndStore(request):
         if(request is not None):
             messages.success(request,"共[%d]条数据被新增到数据库." % int(new_num-old_num))
     except Exception as e:
+        print("!!Exception:[%s]" % e)
         if (request is not None):
             messages.error(request, str(e))
 

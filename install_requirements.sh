@@ -1,16 +1,3 @@
-django -1.8.15
-requests
-mysqlclient
-    -python3-dev
-    -libmysqlclient-dev
-django_cron
-bs4
-lxml
-    -libxml2-dev
-    -libxslt1-dev
-    -python-dev
-
-
 pip install django==1.8.15
 pip install requests
 sudo apt-get install python3-dev
