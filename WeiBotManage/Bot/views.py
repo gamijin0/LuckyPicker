@@ -1,3 +1,4 @@
+
 from django.shortcuts import render_to_response,RequestContext,redirect,resolve_url
 from django.contrib import messages
 from .models import Bot_db,WeiBo_db,Blogger_db,TransmitedRelationship,ProxyRecord
@@ -134,7 +135,7 @@ def SearchAndStore(request):
         print(u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
 
         if(request is not None):
-            messages.success(request,u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+            messages.success(request,u"total [%d] added." % int(new_num-old_num))
     except Exception as e:
         print(u"!!Exception:[%s]" % e)
         if (request is not None):
