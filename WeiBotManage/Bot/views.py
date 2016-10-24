@@ -120,7 +120,7 @@ def SearchAndStore(request):
         try:
             search_res_list = one.Search(u'微博抽奖平台 红包')
             for tu in search_res_list:
-                weibo = WeiBo_db(id=tu[1],content=tu[2])
+                weibo = WeiBo_db(id=tu[1])
                 blogger = Blogger_db(uid=tu[0])
                 blogger.save()
                 weibo.blogger = blogger
@@ -144,23 +144,30 @@ def showWeiBoInfo(request):
 
 #转发并关注
 def careAndTransmit(request):
+    count = 0
     LIMIT_NUM = 1 #转发限制
-    limit = 1
     bot_db_list = Bot_db.objects.all()
     for bot_db in bot_db_list:
         if(bot_db.isValid==True):
+            limit = 1
             one = Bot()
             one.set(bot_db=bot_db)
             for weibo in WeiBo_db.objects.all():
-                one.Care(uid=weibo.blogger.uid)
-                if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
-                    one.TransmitWeibo(content="手动比心...",id=weibo.id)
-                    limit+=1
-                    if(limit>LIMIT_NUM):
-                        break
-                else:
-                    print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
+                    one.Care(uid=weibo.blogger.uid)
+                    if(len(TransmitedRelationship.objects.filter(weibo_id=weibo.id,bot_id=bot_db.username))==0):
+                        one.TransmitWeibo(content="手动比心...",id=weibo.id)
+                        limit+=1
+                        count+=1
+                        if(limit>LIMIT_NUM):
+                            break
+                    else:
+                        print("账号[%s]已经转发过微博[%s]." % (bot_db.username,weibo.id))
 
+    if(request is not None):
+        if(count>0):
+            messages.success(request, "本次[%d]个账号共转发了[%d]条微博" % (len(bot_db_list),int(count)))
+        else:
+            messages.warning(request, "并未检索到最新的微博")
     return redirect(resolve_url(to='botManage'))
 
 #检查更新数据库中能使用的代理ip

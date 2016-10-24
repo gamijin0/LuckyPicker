@@ -120,15 +120,15 @@ class Bot:
                          )
         print(res.text)
         import json
-        res = json.loads(res.text)
-        # qp 是首页未读消息, ht 是私信消息
-        # if 'qp' in res and 'new' in res['qp']:
-        #     print("账号[%s]有[%d]条新的首页消息." % (self.username,int(res['qp']['new'])))
-        if 'ht' in res and 'sx' in res['ht']:
-            print(u"账号[%s]有[%d]条新的私信消息." % (self.username,int(res['ht']['sx'])))
-            return res['ht']['sx']
-        # 返回未读私信数量
-
+        if(len(res.text)!=0):
+            res = json.loads(res.text)
+            # qp 是首页未读消息, ht 是私信消息
+            # if 'qp' in res and 'new' in res['qp']:
+            #     print("账号[%s]有[%d]条新的首页消息." % (self.username,int(res['qp']['new'])))
+            if 'ht' in res and 'sx' in res['ht']:
+                print(u"账号[%s]有[%d]条新的私信消息." % (self.username,int(res['ht']['sx'])))
+                return res['ht']['sx']
+            # 返回未读私信数量
         return 0
 
 
@@ -245,9 +245,9 @@ class Bot:
         cards = res['cards']
         res_list =list()
         for i in cards[2]['card_group']:
-            one = (str(i['mblog']['user']['id']),str(i['mblog']['id']),str(i['mblog']['text']))
-            res_list.append(one)
-
+            if('mblog' in i):
+                one = (str(i['mblog']['user']['id']),str(i['mblog']['id']),str(i['mblog']['text']))
+                res_list.append(one)
         return res_list
 
 
