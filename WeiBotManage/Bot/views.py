@@ -119,26 +119,26 @@ def SearchAndStore(request):
         type="None",
         headers=bot_db.cookies,
     )
-    try:
-        old_num = len(WeiBo_db.objects.all())
-        search_res_list = one.Search(u'微博抽奖平台 红包')
-        for tu in search_res_list:
-            if(u"恭喜" not in tu[2] and len(WeiBo_db.objects.filter(id=tu[1]))==0):
-                weibo = WeiBo_db(id=tu[1])
-                blogger = Blogger_db(uid=tu[0])
-                blogger.save()
-                weibo.blogger = blogger
-                weibo.save()
-                print("one WeiBo[%s] added into database" % (weibo.id))
-        new_num = len(WeiBo_db.objects.all())
-        print(u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+    # try:
+    old_num = len(WeiBo_db.objects.all())
+    search_res_list = one.Search(u'微博抽奖平台 红包')
+    for tu in search_res_list:
+        if(u"恭喜" not in tu[2] and len(WeiBo_db.objects.filter(id=tu[1]))==0):
+            weibo = WeiBo_db(id=tu[1])
+            blogger = Blogger_db(uid=tu[0])
+            blogger.save()
+            weibo.blogger = blogger
+            weibo.save()
+            print("one WeiBo[%s] added into database" % (weibo.id))
+    new_num = len(WeiBo_db.objects.all())
+    print(u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
 
-        if(request is not None):
-            messages.success(request,u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
-    except Exception as e:
-        print(u"!!Exception:[%s]" % e)
-        if (request is not None):
-            messages.error(request, str(e))
+    if(request is not None):
+        messages.success(request,u"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+    # except Exception as e:
+    #     print(u"!!Exception:[%s]" % e)
+    #     if (request is not None):
+    #         messages.error(request, str(e))
 
     return redirect(resolve_url(to='botManage'))
 
