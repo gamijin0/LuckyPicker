@@ -2,9 +2,9 @@ import requests
 from .models import Bot_db,TransmitedRelationship,WeiBo_db
 from selenium import webdriver
 from bs4 import BeautifulSoup
-import io
-import sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+# import io
+# import sys
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 class Bot:
     # attrs
@@ -189,7 +189,7 @@ class Bot:
             )
             if (resp.status_code ==200):
                 import datetime
-                print(u"账号[%s]转发微博成功[%s]." % (self.username, datetime.datetime.now()))
+                print(u"Account[%s] trans [%s] succeed." % (self.username, datetime.datetime.now()))
                 #记录下转发关系
                 one = TransmitedRelationship()
                 one.bot_id = self.username
