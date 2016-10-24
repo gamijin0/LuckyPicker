@@ -1,8 +1,6 @@
 from django.conf.urls import include, url
 from .views import *
-import io
-import sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+
 
 urlpatterns = [
     url(r'^manage',view=manage,name="botManage"),

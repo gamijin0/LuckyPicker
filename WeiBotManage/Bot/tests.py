@@ -2,9 +2,7 @@ import requests
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from .models import ProxyRecord
-import io
-import sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+
 
 class TestBot:
     # attrs
