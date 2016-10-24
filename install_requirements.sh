@@ -9,3 +9,4 @@ sudo apt-get install libxml2-dev
 sudo apt-get install libxslt1-dev
 sudo apt-get install python-dev
 pip install lxml
+pip install selenium
