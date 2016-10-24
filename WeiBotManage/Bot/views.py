@@ -109,25 +109,31 @@ def checkBotStatusManually(request):
 
 #搜索合适的微博并存入数据库,以便以后使用
 def SearchAndStore(request):
-    if(request.method=='GET'):
-        bot_db = Bot_db.objects.all()[0]
-        one = Bot(
-            username=bot_db.username,
-            password=bot_db.password,
-            type="None",
-            headers=bot_db.cookies,
-        )
-        try:
-            search_res_list = one.Search(u'微博抽奖平台 红包')
-            for tu in search_res_list:
+    bot_db = Bot_db.objects.all()[0]
+    one = Bot(
+        username=bot_db.username,
+        password=bot_db.password,
+        type="None",
+        headers=bot_db.cookies,
+    )
+    try:
+        old_num = len(WeiBo_db.objects.all())
+        search_res_list = one.Search(u'微博抽奖平台 红包')
+        for tu in search_res_list:
+            if("恭喜" not in tu[2]):
                 weibo = WeiBo_db(id=tu[1])
                 blogger = Blogger_db(uid=tu[0])
                 blogger.save()
                 weibo.blogger = blogger
                 weibo.save()
-                print("one WeiBo added into database")
-            messages.success(request,"[%d]条数据被搜索到." % len(search_res_list))
-        except Exception as e:
+                print("one WeiBo[%s] added into database" % (weibo.id))
+        new_num = len(WeiBo_db.objects.all())
+        print("共[%d]条数据被新增到数据库." % int(new_num-old_num))
+
+        if(request is not None):
+            messages.success(request,"共[%d]条数据被新增到数据库." % int(new_num-old_num))
+    except Exception as e:
+        if (request is not None):
             messages.error(request, str(e))
 
     return redirect(resolve_url(to='botManage'))
