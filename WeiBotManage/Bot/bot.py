@@ -222,8 +222,7 @@ class Bot:
             #无论是否已经关注，都返回关注
             if (resp.status_code ==200):
                  import datetime
-                 pass
-                 # print(u"账号[%s]关注用户[%s]成功[%s]." % (self.username,uid,datetime.datetime.now()))
+                 print(u"Account[%s] care id[%s] succeed [%s]." % (self.username,uid,datetime.datetime.now()))
         except Exception as e:
             print(e)
 
