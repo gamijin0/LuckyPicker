@@ -4,3 +4,4 @@ mysqlclient
     -python3-dev
     -...
 bs4
+pip install scrapy

@@ -13,3 +13,7 @@ class Bot(models.Model):
     cookies = models.CharField(max_length=2000)
     #收到的消息数量
     message_num = models.IntegerField(default=0)
+
+class SendContent(models.Model):
+    #新闻内容
+    content=models.CharField(primary_key=True,null=False,max_length=500)
