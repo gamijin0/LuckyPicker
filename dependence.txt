@@ -10,3 +10,5 @@ lxml
     -libxml2-dev
     -libxslt1-dev
     -python-dev
+bs4
+pip install scrapy
