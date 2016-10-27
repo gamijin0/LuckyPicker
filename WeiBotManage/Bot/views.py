@@ -124,6 +124,7 @@ def SearchAndStore(request):
     )
     try:
         old_num = len(WeiBo_db.objects.all())
+        one.Search(u'微博抽奖平台 红包') #add another search to be safer
         search_res_list = one.Search(u'微博抽奖平台 红包')
         for tu in search_res_list:
             if(u"恭喜" not in tu[2] and len(WeiBo_db.objects.filter(id=tu[1]))==0):
