@@ -10,8 +10,6 @@ class MySpider(scrapy.Spider):
     def parse(self, response):
         from bs4 import BeautifulSoup
 
-        print(response)
-
         soup = BeautifulSoup(response.text, "html.parser")
 
         # pTitle=soup.findAll('div',class_="content_tit")

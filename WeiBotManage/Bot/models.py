@@ -42,6 +42,7 @@ class TransmitedRelationship(models.Model):
 class ProxyRecord(models.Model):
     #代理ip
     proxy = models.CharField(null=False,max_length=100)
+
 class SendContent(models.Model):
     #新闻内容
-    content=models.CharField(primary_key=True,null=False,max_length=500)
+    content=models.TextField(primary_key=True,null=False,max_length=1000)
