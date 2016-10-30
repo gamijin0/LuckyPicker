@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'Bot',
     'django_cron',
+    'WeiBoSpider',
 )
 
 MIDDLEWARE_CLASSES = (

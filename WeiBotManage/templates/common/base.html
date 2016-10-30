@@ -11,6 +11,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/jquery.dataTables.min.css">
 
     <!-- Custom CSS -->
     <link href="/static/css/sb-admin.css" rel="stylesheet">
@@ -22,12 +23,84 @@
     <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 
+    <!-- DataTables JS -->
+    <!-- jQuery -->
+    <script src="/static/js/jquery.js"></script>
+{#    <script src="/static/js/jquery-1.11.0.min.js"></script>#}
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.dataTables.min.js"></script>
+
+
+    <!-- Datatables CSS -->
+    <link href="/static/css/dataTables.bootstrap.min.css">
+
+    <script src="/static/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#myCount').dataTable({
+                "aoColumnDefs":[
+                    {   "sWidth": "10%","aTargets":[0]},
+                    {   "sWidth": "10%","aTargets":[1]},
+                    {   "sWidth": "10%","aTargets":[2]},
+                    {   "sWidth": "10%","aTargets":[3]},
+                    {   "sWidth": "30%","aTargets":[4]},
+                    {   "sWidth": "10%","aTargets":[5]}
+                  ],
+                 "oLanguage": {
+                     "sProcessing": "正在加载中......",
+                     "sLengthMenu": "每页显示 _MENU_ 条记录",
+                     "sZeroRecords": "正在加载中......",
+                     "sEmptyTable": "查询无数据！",
+                     "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                     "sInfoEmpty": "显示0到0条记录",
+                     "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                     "sSearch": "当前数据搜索:",
+                     "oPaginate": {
+                         "sFirst": "首页",
+                         "sPrevious": "上一页",
+                         "sNext": "下一页",
+                         "sLast": "末页"
+                     }
+                 },"bJQueryUI": true,
+             "sScrollY": "500px", "sScrollX": "100%"
+            })
+        });
+    </script>
+    <script>
+            $(document).ready(function(){
+                $('#myWeiboInfor').dataTable({
+                    "aoColumnDefs":[
+                        {   "sWidth": "10%","aTargets":[0]},
+                        {   "sWidth": "50%","aTargets":[1]},
+                        {   "sWidth": "20%","aTargets":[2]}
+                      ],
+                     "oLanguage": {
+                         "sProcessing": "正在加载中......",
+                         "sLengthMenu": "每页显示 _MENU_ 条记录",
+                         "sZeroRecords": "正在加载中......",
+                         "sEmptyTable": "查询无数据！",
+                         "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                         "sInfoEmpty": "显示0到0条记录",
+                         "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                         "sSearch": "当前数据搜索:",
+                         "oPaginate": {
+                             "sFirst": "首页",
+                             "sPrevious": "上一页",
+                             "sNext": "下一页",
+                             "sLast": "末页"
+                         }
+                     },"bJQueryUI": true,
+                 "sScrollY": "500px", "sScrollX": "100%"
+                })
+            });
+    </script>
+
 </head>
 
 <body>
 
 
-            <div id="wrapper">
+        <div id="wrapper">
 
 
             <!-- Navigation -->
@@ -77,8 +150,7 @@
             <!-- /#page-wrapper -->
         </div>
         <!-- /#wrapper -->
-     <!-- jQuery -->
-    <script src="/static/js/jquery.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/static/js/bootstrap.min.js"></script>
